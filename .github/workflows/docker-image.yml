@@ -15,10 +15,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Set Image tag
+      run: |
+          echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+
+          
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: |
-        echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
         docker build . --file Dockerfile --tag ghcr.io/dominate2/webtest4azura:$IMAGE_TAG
         docker login ghcr.io -u dominate2 -p ${{secrets.GHCR_TOKEN}}
         docker push ghcr.io/dominate2/webtest4azura:$IMAGE_TAG
