@@ -27,4 +27,12 @@ jobs:
         docker login ghcr.io -u dominate2 -p ${{secrets.GHCR_TOKEN}}
         docker push ghcr.io/dominate2/webtest4azura:$IMAGE_TAG
         docker push ghcr.io/dominate2/webtest4azura:latest
-        
+
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'teszt-13A'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_7d454ee9d856439ab1ba71dd2d3bf245 }}
+        images: 'ghcr.io/dominate2/webtest4azura:${{ env.IMAGE_TAG }}'
